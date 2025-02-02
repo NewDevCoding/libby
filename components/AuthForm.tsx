@@ -15,7 +15,7 @@ interface Props<T extends FieldValues> {
 const AuthForm = <T extends FieldValues> ({
     type, 
     schema,
-    // onSubmit, 
+    onSubmit, 
     defaultValues, 
     
 }: Props<T>) => {
