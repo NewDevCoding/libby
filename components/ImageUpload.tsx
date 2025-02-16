@@ -6,13 +6,16 @@ import ImageKit from "imagekit";
 import { useRef, useState } from "react";
 import Image from "next/image";
 import { toast } from "@/hooks/use-toast";
-import { cn } from "@/lib/utils";
+import { cn } from "@/lib/utils"
 
-const {
-  env: {
-    imagekit: { publicKey, urlEndpoint },
-  },
-} = config;
+// const {
+//   env: {
+//     imagekit: { publicKey, urlEndpoint },
+//   },
+// } = config;
+
+const publicKey = "public_4/sE5XlRxhIzg7wXl8DytIHFhe4="
+const urlEndpoint = "https://ik.imagekit.io/molotovboi"
 
 const authenticator = async () => {
   try {
@@ -46,7 +49,7 @@ interface Props {
   value?: string;
 }
 
-const FileUpload = ({
+const ImageUpload = ({
   type,
   accept,
   placeholder,
@@ -122,73 +125,73 @@ const FileUpload = ({
       authenticator={authenticator}
     >
       <IKUpload
-        ref={ikUploadRef}
-        onError={onError}
-        onSuccess={onSuccess}
-        useUniqueFileName={true}
-        validateFile={onValidate}
-        onUploadStart={() => setProgress(0)}
-        onUploadProgress={({ loaded, total }) => {
-          const percent = Math.round((loaded / total) * 100);
+      ref={ikUploadRef}
+      onError={onError}
+      onSuccess={onSuccess}
+      useUniqueFileName={true}
+      validateFile={onValidate}
+      onUploadStart={() => setProgress(0)}
+      onUploadProgress={({ loaded, total }) => {
+        const percent = Math.round((loaded / total) * 100);
 
-          setProgress(percent);
-        }}
-        folder={folder}
-        accept={accept}
-        className="hidden"
+        setProgress(percent);
+      }}
+      folder={folder}
+      accept={accept}
+      className="hidden"
       />
 
       <button
-        className={cn("upload-btn", styles.button)}
-        onClick={(e) => {
-          e.preventDefault();
+      className={cn("upload-btn", styles.button)}
+      onClick={(e) => {
+        e.preventDefault();
 
-          if (ikUploadRef.current) {
-            // @ts-ignore
-            ikUploadRef.current?.click();
-          }
-        }}
+        if (ikUploadRef.current) {
+        // @ts-ignore
+        ikUploadRef.current?.click();
+        }
+      }}
       >
-        <Image
-          src="/icons/upload.svg"
-          alt="upload-icon"
-          width={20}
-          height={20}
-          className="object-contain"
-        />
+      <Image
+        src="/icons/upload.svg"
+        alt="upload-icon"
+        width={20}
+        height={20}
+        className="object-contain"
+      />
 
-        <p className={cn("text-base", styles.placeholder)}>{placeholder}</p>
+      <p className={cn("text-base", styles.placeholder)}>{placeholder}</p>
 
-        {file && (
-          <p className={cn("upload-filename", styles.text)}>{file.filePath}</p>
-        )}
+      {file && (
+        <p className={cn("upload-filename", styles.text)}>{file.filePath}</p>
+      )}
       </button>
 
       {progress > 0 && progress !== 100 && (
-        <div className="w-full rounded-full bg-green-200">
-          <div className="progress" style={{ width: `${progress}%` }}>
-            {progress}%
-          </div>
+      <div className="w-full rounded-full bg-green-200">
+        <div className="progress" style={{ width: `${progress}%` }}>
+        {progress}%
         </div>
+      </div>
       )}
 
       {file &&
-        (type === "image" ? (
-          <IKImage
-            alt={file.filePath}
-            path={file.filePath}
-            width={500}
-            height={300}
-          />
-        ) : type === "video" ? (
-          <IKVideo
-            path={file.filePath}
-            controls={true}
-            className="h-96 w-full rounded-xl"
-          />
-        ) : null)}
+      (type === "image" ? (
+        <IKImage
+        alt={file.filePath || ''}
+        path={file.filePath || ''}
+        width={500}
+        height={300}
+        />
+      ) : type === "video" ? (
+        <IKVideo
+        path={file.filePath || ''}
+        controls={true}
+        className="h-96 w-full rounded-xl"
+        />
+      ) : null)}
     </ImageKitProvider>
   );
 };
 
-export default FileUpload;
+export default ImageUpload;
