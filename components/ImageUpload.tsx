@@ -8,14 +8,11 @@ import Image from "next/image";
 import { toast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils"
 
-// const {
-//   env: {
-//     imagekit: { publicKey, urlEndpoint },
-//   },
-// } = config;
-
-const publicKey = "public_4/sE5XlRxhIzg7wXl8DytIHFhe4="
-const urlEndpoint = "https://ik.imagekit.io/molotovboi"
+const {
+  env: {
+    imagekit: { publicKey, urlEndpoint },
+  },
+} = config;
 
 const authenticator = async () => {
   try {
@@ -49,6 +46,10 @@ interface Props {
   value?: string;
 }
 
+interface IKUploadRef {
+  click: () => void;
+}
+
 const ImageUpload = ({
   type,
   accept,
@@ -58,7 +59,7 @@ const ImageUpload = ({
   onFileChange,
   value,
 }: Props) => {
-  const ikUploadRef = useRef(null);
+  const ikUploadRef = useRef<IKUploadRef>(null);
   const [file, setFile] = useState<{ filePath: string | null }>({
     filePath: value ?? null,
   });
@@ -147,8 +148,7 @@ const ImageUpload = ({
         e.preventDefault();
 
         if (ikUploadRef.current) {
-        // @ts-ignore
-        ikUploadRef.current?.click();
+          ikUploadRef.current.click();
         }
       }}
       >
